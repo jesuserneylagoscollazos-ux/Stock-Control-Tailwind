@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="https://fontawesome.com"></script>
+    <title>STOCK CONTROL</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Press+Start+2P&family=Russo+One&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geomini:wght@200..800&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Press+Start+2P&family=Russo+One&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { geomini: ['Geomini'] },
+                    // "transition: .5s" del CSS original = all, 0.5s, ease
+                    transitionDuration: { DEFAULT: '500ms' },
+                    transitionTimingFunction: { DEFAULT: 'ease' },
+                    keyframes: {
+                        imgmove: { '0%,100%': { transform: 'translateX(0px) translateY(0px)' }, '50%': { transform: 'translateX(0px) translateY(10px)' } },
+                        iconmove: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-5px)' } },
+                        circ: { '0%,100%': { transform: 'scale(0.70)' }, '50%': { transform: 'scale(1.40)' } },
+                        opac: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.70' } }
+                    },
+                    animation: {
+                        imgmove: 'imgmove 4s infinite',
+                        imgmove5: 'imgmove 5s infinite',
+                        iconmove: 'iconmove 7s infinite',
+                        circ: 'circ 4s infinite',
+                        opac: 'opac 7s infinite'
+                    }
+                }
+            },
+            
+            plugins: [
+                function ({ addVariant }) {
+                    addVariant('vis', '&.visible');                  // clase que agrega el IntersectionObserver
+                    addVariant('appear', '&.nav-appear');            // clase del menú hamburguesa abierto
+                    addVariant('moved', '&.Contenedor_header_move'); // clase del header al hacer scroll
+                }
+            ]
+        }
+    </script>
+</head>
+<body class="font-geomini leading-[normal] [&_img]:inline [&_img]:max-w-none [&_img]:align-baseline">
+
+        <div class="contenedor_header oculto bg-black w-full h-[90px] flex justify-between items-center fixed z-[999] px-[100px] max-[1400px]:px-[10px] opacity-0 -translate-y-16 delay-500 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0 moved:bg-[rgba(17,8,0,0.932)]">
+
+            <div class="w-1/4 max-[1400px]:w-[85%] flex items-center text-[#E28743]">
+
+                <div class="w-[40%]">
+                    <img src="imagenes/logos/logo_stock.avif" class="w-1/2 h-1/2 bg-no-repeat bg-cover bg-center max-[1400px]:w-[70px] max-[1400px]:h-[70px]" alt="">
+                </div>
+
+                <div class="w-[60%] max-[1400px]:w-[80%]">
+                    <h1 class="text-[20px] font-bold">STOCK CONTROL</h1>
+                </div>
+
+            </div>
+
+            <nav class="nav w-3/4 flex justify-around items-center transition-all max-[1400px]:flex-col max-[1400px]:w-full max-[1400px]:h-[800px] max-[1400px]:pt-[25rem] max-[1400px]:absolute max-[1400px]:bg-[url('imagenes/Fondos_img/fondo_navbar.png')] max-[1400px]:right-0 max-[1400px]:left-0 max-[1400px]:-translate-y-[30rem] max-[1400px]:appear:translate-y-0">
+
+                <ul class="list-none flex justify-center items-center gap-[15px] bg-[#11111175] border-2 border-[#2B2D31] p-[5px] rounded-[50px] shadow-[0_2px_10px_#363636ad] font-semibold w-fit min-h-[55px] max-[1400px]:w-full max-[1400px]:h-[70%] max-[1400px]:flex-col max-[1400px]:border-none max-[1400px]:shadow-none max-[1400px]:bg-transparent max-[1400px]:gap-[30px]">
+                    <li><a href="#inicio" class="text-white no-underline text-[14px] px-5 py-[13px] cursor-pointer relative z-[1] transition-all before:content-[''] before:opacity-0 before:bg-[#E28743] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100" onclick="RemoveNav()">Inicio</a></li>
+                    <li><a href="#modulos" class="text-white no-underline text-[14px] px-5 py-[13px] cursor-pointer relative z-[1] transition-all before:content-[''] before:opacity-0 before:bg-[rgb(185,121,72)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100" onclick="RemoveNav()">Modulos</a></li>
+                    <li><a href="#Funciones" class="text-white no-underline text-[14px] px-5 py-[13px] cursor-pointer relative z-[1] transition-all before:content-[''] before:opacity-0 before:bg-[rgb(148,90,45)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100" onclick="RemoveNav()">Funciones</a></li>
+                    <li><a href="#beneficios" class="text-white no-underline text-[14px] px-5 py-[13px] cursor-pointer relative z-[1] transition-all before:content-[''] before:opacity-0 before:bg-[rgb(248,171,112)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100" onclick="RemoveNav()">Beneficios</a></li>
+                    <li><a href="#capturas" class="text-white no-underline text-[14px] px-5 py-[13px] cursor-pointer relative z-[1] transition-all before:content-[''] before:opacity-0 before:bg-[rgb(236,109,11)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100" onclick="RemoveNav()">Capturas</a></li>
+                </ul>
+
+                <ul class="list-none flex gap-5 text-[17px] no-underline max-[1400px]:w-full max-[1400px]:h-[30%] max-[1400px]:items-center max-[1400px]:justify-center">
+                    <a href="login.html" target="_blank" class="text-white no-underline relative transition-all px-5 py-[13px] cursor-pointer z-[1] before:content-[''] before:opacity-0 before:bg-[rgba(226,136,67,1)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100">
+                        <li>Iniciar Sesión</li>
+                    </a>
+                    <a href="Register.html" target="_blank" class="text-white no-underline relative transition-all px-5 py-[13px] cursor-pointer z-[1] before:content-[''] before:opacity-0 before:bg-[rgba(226,136,67,1)] before:w-full before:h-full before:rounded-[50px] before:inset-0 before:absolute before:transition-all before:z-[-1] hover:before:opacity-100">
+                        <li>Registrarse</li>
+                    </a>
+                </ul>
+
+            </nav>
+
+            <div class="nav-responsive bg-[#f5f5f5] cursor-pointer hidden text-[#E0E0E0] z-[999] max-[1400px]:block max-[1400px]:w-[50px] max-[1400px]:h-[45px] max-[1400px]:rounded-[10px] max-[1400px]:text-center max-[1400px]:leading-[50px] max-[1400px]:text-[25px] max-[1400px]:bg-[#E28743] max-[1400px]:transition-all max-[1400px]:duration-200">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+    </div>
+
+    <section id="inicio" class="min-h-screen pb-5 bg-[image:linear-gradient(180deg,#fffef170)] bg-center bg-no-repeat bg-cover relative z-0 [contain:paint]">
+
+        <div class="bg-black absolute w-[49%] h-full z-[1] left-0 max-[1200px]:w-full max-[1200px]:h-[48%]"></div>
+
+        <div class="absolute z-0 top-[10%] right-[45%] w-[30%] max-w-[350px] min-w-[200px] h-[30%] max-h-[400px] bg-[image:radial-gradient(circle,rgba(255,181,125,0.425)_0%,rgba(247,150,76,0)_70%)] animate-circ transition-all max-[1200px]:hidden"></div>
+
+        <div class="group/inicio mx-auto flex pt-[140px] max-[1200px]:flex-col max-[1200px]:w-full max-[1200px]:pb-[50px]">
+
+            <div class="flex-1 min-h-[600px] relative flex items-center justify-center rounded-[20px] after:content-[''] after:block after:w-full after:h-full after:absolute after:bg-[url('imagenes/imagenes_Stock/oficina_invi.avif')] after:rounded-[30px] after:z-[1] after:shadow-[inset_0_0_10px_#000000,0_0_20px_#000000] max-[1200px]:w-full max-[1200px]:flex-none">
+                <img src="imagenes/imagenes_Stock/abeja_invi_img2.avif" class="w-full h-full max-h-[800px] min-h-[500px] object-contain absolute z-20 opacity-0 transition-all animate-imgmove group-has-[.hov-tarjeta:hover]/inicio:opacity-100" alt="">
+                <img src="imagenes/imagenes_Stock/abeja_invi_img1.avif" class="w-full h-full max-h-[800px] min-h-[500px] object-contain absolute z-20 opacity-0 transition-all animate-imgmove group-has-[.hov-demo:hover]/inicio:opacity-100" alt="">
+                <img src="imagenes/imagenes_Stock/abeja_invi-Photoroom.avif" class="w-full h-full max-h-[800px] min-h-[500px] object-contain absolute z-20 opacity-100 transition-all animate-imgmove group-has-[.hov-tarjeta:hover]/inicio:opacity-0 group-has-[.hov-demo:hover]/inicio:opacity-0" alt="">
+
+                <div class="absolute left-0 w-4/5 h-[65%] flex flex-col items-center gap-[50px]">
+
+                <div class="relative w-full h-full rounded-[15px] bg-center bg-no-repeat bg-cover z-10 after:absolute after:content-[''] after:block after:w-[200px] after:h-[200px] after:right-0 after:rounded-full after:shadow-[0px_0px_5px_#ffab5d,0_0_5px_#ffc58fea,0_0_205px_#ffd4ad]"></div>
+
+                </div>
+
+                <div class="absolute bottom-[50px] z-30 w-full h-[10%] flex flex-wrap justify-center items-center gap-[30px]">
+
+                    <div class="w-[130px] h-[50px] bg-[#000000ce] rounded-[15px] flex items-center justify-between text-[#030303] animate-iconmove">
+
+                        <div class="leading-[13px] text-white p-[5px]">
+                            Automatiza
+                            <span class="text-[10px]">Manualidades</span>
+                        </div>
+
+                        <div class="text-[20px] text-[#E28743] pr-[10px]">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="w-[130px] h-[50px] bg-[#000000ce] rounded-[15px] flex items-center justify-between text-[#030303] animate-iconmove">
+
+                        <div class="leading-[13px] text-white p-[5px]">
+                        Modulos 
+                        <span class="text-[10px]">Funcionales</span>
+                        </div>
+
+                        <div class="text-[20px] text-[#E28743] pr-[10px]">
+                        <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        
+                    </div>
+
+                    <div class="w-[130px] h-[50px] bg-[#000000ce] rounded-[15px] flex items-center justify-between text-[#030303] animate-iconmove">
+
+                        <div class="leading-[13px] text-white p-[5px]">
+                        Respuesta 
+                        <span class="text-[10px]">Rapida</span>
+                        </div>
+
+                        <div class="text-[20px] text-[#E28743] pr-[10px]">
+                        <i class="fa-solid fa-bolt"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="flex-1 min-h-[600px] px-8 flex flex-col gap-[30px] mt-[180px] max-[1200px]:w-full max-[1200px]:flex-none">
+
+                <div class="oculto opacity-0 translate-x-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-x-0 w-full h-fit flex items-center justify-center text-center px-[30px] py-5">
+                    <h1 class="text-[40px] font-bold">Automatizacion total de tu inventario: deja atras al <span class="text-[#b83b3b]">proceso manual</span> y da un paso hacia <span class="text-[#E28743]">STOCK CONTROL</span></h1>
+                </div>
+
+                <div class="oculto opacity-0 translate-x-20 delay-300 transition-all duration-[1200ms] vis:opacity-100 vis:translate-x-0 w-full h-fit px-[30px]">
+
+                    <div class="hov-tarjeta w-fit h-fit text-[20px] text-[#2d2e31]">
+                        <p>Automatiza la gestión de inventarios mediante módulos inteligentes que reemplazan procesos manuales, mejoran la eficiencia y reducen pérdidas.</p>
+                    </div>
+
+                </div>
+
+                <div class="oculto opacity-0 translate-x-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-x-0 w-full h-fit px-[30px] flex">
+                    <button class="hov-demo group cursor-default w-[200px] h-[60px] rounded-[10px] border-none text-[20px] bg-black text-white transition-all shadow-none hover:scale-[1.03] hover:bg-[#E28743] hover:shadow-[0_0_10px_#E28743]">
+                        Probar DEMO
+                        <i class="fa-solid fa-arrow-trend-up transition-all group-hover:translate-x-[5px] group-hover:-translate-y-[5px]"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+        <section class="min-h-screen bg-[image:linear-gradient(100deg,#000000ad),url('imagenes/Fondos_img/fondo_modulos.avif')] bg-center bg-cover bg-no-repeat pt-[150px] pb-[50px] [contain:paint]" id="modulos">
+
+                <div class="w-full h-[10%] text-[13px] tracking-[2px] text-center pb-[60px] flex items-center justify-center">
+                    <div class="rounded-[40px] border-2 border-[rgb(189,129,0)] px-[10px] py-[7px] shadow-[0_0_20px_rgb(189,129,0)]">
+
+                        <h1 class="text-[26px] font-bold">
+                    <span class="bg-[image:linear-gradient(to_right,rgb(136,77,0),rgb(255,152,56),rgb(161,94,0))] bg-clip-text text-transparent">
+                        MODULOS
+                    </span> 
+                        </h1>
+
+                    </div>
+                </div>
+
+        <div class="max-w-[1300px] mx-auto px-8 flex items-center justify-center">
+
+                    <div class="absolute w-[30%] max-w-[300px] min-w-[200px] h-[70%] max-h-[300px] min-h-[200px] bg-[image:radial-gradient(circle,rgba(196,132,13,0.6)_0%,rgba(247,150,76,0)_70%)] animate-circ transition-all"></div>
+            
+            <div class="flex justify-center items-center flex-wrap gap-[50px]">
+
+                <div class="oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                        
+                        <img src="imagenes/img_numeros/numero1.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numero1">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-solid fa-chart-column text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Ventas</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Registro de ventas de cafe</p>
+                        <p>Calculo automatico del valor total</p>
+                        <p>Gestion de clientes</p>
+                    </div>
+                    
+                    </div>
+                </div>
+
+                <div class="oculto opacity-0 translate-y-20 delay-300 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                        
+                        <img src="imagenes/img_numeros/numero2.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numero2">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-regular fa-file-lines text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+                    
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Contratos</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Automatización de informacion</p>
+                        <p>Historial de contratos</p>
+                        <p>Gestion de contratos activos</p>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                            
+                            <img src="imagenes/img_numeros/numero3.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numero3">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-solid fa-wallet text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+                    
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Pagos</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Control de pagos pendientes</p>
+                        <p>Consulta rápida por productor</p>
+                        <p>Reporte de pagos</p>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                            
+                            <img src="imagenes/img_numeros/numero4.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numero4">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-solid fa-mug-hot text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+                    
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Cotización del cafe</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Consulta del precio actualizado</p>
+                        <p>Actualización automatica</p>
+                        <p>Historial de cambios</p>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="oculto opacity-0 translate-y-20 delay-300 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                            
+                            <img src="imagenes/img_numeros/numero5.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numer5">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-solid fa-user-gear text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+                    
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Auditoría</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Auditoría de usuarios</p>
+                        <p>Consulta por fechas</p>
+                        <p>Registro de todas las operaciones</p>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+
+                    <div class="group w-[30%] min-w-[290px] max-w-[290px] h-[235px] max-[1000px]:h-[260px] bg-[#fffbf8ec] rounded-[15px] p-[15px] relative transition-all shadow-none hover:scale-[1.02] hover:-translate-y-[6px] hover:shadow-[0_8px_5px_#feffff1e] hover:bg-[#ffffffec]">
+                            
+                            <img src="imagenes/img_numeros/numero6.avif" class="absolute w-full h-full z-0 opacity-60" alt="Numero6">
+
+                    <div class="absolute flex items-center justify-center w-[55px] h-[55px] rounded-[15px] bg-[#fdf1db] -top-[10px] -right-[5px] transition-all z-[120] shadow-none group-hover:scale-110 group-hover:-rotate-[10deg] group-hover:shadow-[0_0_10px_#ffffff] group-hover:bg-[#E28743]">
+                        <i class="fa-solid fa-gear text-[25px] text-[#e6a045] group-hover:text-white"></i>
+                    </div>
+                    
+                    <div class="text-black flex items-center justify-center text-[13px] px-[15px] py-5 transition-all text-center group-hover:scale-[1.06]">
+                        <h1 class="text-[26px] font-bold">Clasificación del cafe</h1>
+                    </div>
+                    
+                    <div class="text-[#241e18] text-[15px] leading-[25px] pl-[10px]">
+                        <p>Cálculo de valor diferencial</p>
+                        <p>Clasificación por tipo de cafe</p>
+                        <p>Modificación respecto a valor de cooperativa</p>
+                    </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="min-h-screen pt-[140px] bg-center bg-cover bg-no-repeat bg-[image:linear-gradient(100deg,#fffef170),url('imagenes/Fondos_img/fondo_funciones.avif')] relative [contain:paint]" id="Funciones">
+
+                <div class="px-4 w-full h-[10%] text-[20px] tracking-[2px] text-center pb-[30px] flex items-center justify-center">
+
+                        <h1 class="text-[40px] font-bold">
+                    <span class="bg-[image:linear-gradient(to_right,rgb(202,132,1),rgb(236,163,27),rgb(180,136,16))] bg-clip-text text-transparent">
+                        FUNCIONES
+                    </span> 
+                        </h1>
+
+                </div>
+
+        <div class="mx-auto px-4 flex gap-[40px] max-[1500px]:flex-col max-[1500px]:pb-[60px]">
+
+            <div class="flex-1 min-h-[600px] flex justify-center flex-wrap gap-[30px]">
+
+                <div class="group w-[35%] max-w-[350px] min-w-[300px] h-auto min-h-[300px] max-h-[350px] px-[25px] py-5 rounded-[15px] flex flex-col bg-[#fffbf8] text-white relative transition-all hover:scale-[1.02] hover:-translate-y-[10px]">
+                    <div class="w-full text-[13px] text-center py-5 text-black transition-all group-hover:text-[#E28743] group-hover:scale-[1.02]">
+                        <h1 class="text-[26px] font-bold">Automatización de inventario</h1>
+                    </div>
+
+                    <div class="text-base w-full text-[#444446] leading-[1.5]">
+                        <p>Optimiza la administración de inventarios mediante procesos automatizados que reducen el trabajo manual y aumentan la eficiencia operativa.</p>
+                    </div>
+
+                        <img src="imagenes/imagenes_Stock/abeja_acostada.avif" class="absolute w-[100px] h-[70px] -bottom-[30px] -translate-x-[50px] transition-all group-hover:translate-x-[115px]" alt="abeja Stock">
+
+                        <div class="relative w-full h-full after:content-[''] after:opacity-0 after:absolute after:w-9 after:h-[26px] after:-bottom-3 after:right-[11px] after:bg-[#E28743] after:shadow-[0_0_10px_#E28743,0_0_30px_#e28843bd] after:z-10 after:rounded-[10px] after:transition-all group-hover:after:opacity-100 group-hover:after:scale-[1.4] group-hover:after:delay-100">
+                            <img src="imagenes/imagenes_Stock/pantalla_computador1-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-100 group-hover:opacity-0" alt="computador">
+                            <img src="imagenes/imagenes_Stock/patanlla_computador2-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-0 group-hover:opacity-100" alt="computador">
+                        </div>
+                </div>
+
+                <div class="group w-[35%] max-w-[350px] min-w-[300px] h-auto min-h-[300px] max-h-[350px] px-[25px] py-5 rounded-[15px] flex flex-col bg-[#fffbf8] text-white relative transition-all hover:scale-[1.02] hover:-translate-y-[10px]">
+                    <div class="w-full text-[13px] text-center py-5 text-black transition-all group-hover:text-[#E28743] group-hover:scale-[1.02]">
+                        <h1 class="text-[26px] font-bold">Reducción de errores</h1>
+                    </div>
+
+                    <div class="text-base w-full text-[#444446] leading-[1.5]">
+                        <p>Disminuye significativamente los errores operativos gracias al control automatizado del inventario.</p>
+                    </div>
+
+                        <img src="imagenes/imagenes_Stock/abeja_acostada.avif" class="absolute w-[100px] h-[70px] -bottom-[30px] -translate-x-[50px] transition-all group-hover:translate-x-[115px]" alt="abeja Stock">
+
+                        <div class="relative w-full h-full after:content-[''] after:opacity-0 after:absolute after:w-9 after:h-[26px] after:-bottom-3 after:right-[11px] after:bg-[#E28743] after:shadow-[0_0_10px_#E28743,0_0_30px_#e28843bd] after:z-10 after:rounded-[10px] after:transition-all group-hover:after:opacity-100 group-hover:after:scale-[1.4] group-hover:after:delay-100">
+                            <img src="imagenes/imagenes_Stock/pantalla_computador1-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-100 group-hover:opacity-0" alt="computador">
+                            <img src="imagenes/imagenes_Stock/patanlla_computador2-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-0 group-hover:opacity-100" alt="computador">
+                        </div>
+                </div>
+
+                <div class="group w-[35%] max-w-[350px] min-w-[300px] h-auto min-h-[300px] max-h-[350px] px-[25px] py-5 rounded-[15px] flex flex-col bg-[#fffbf8] text-white relative transition-all hover:scale-[1.02] hover:-translate-y-[10px]">
+                    <div class="w-full text-[13px] text-center py-5 text-black transition-all group-hover:text-[#E28743] group-hover:scale-[1.02]">
+                        <h1 class="text-[26px] font-bold">Gestión Administrativa</h1>
+                    </div>
+
+                    <div class="text-base w-full text-[#444446] leading-[1.5]">
+                        <p>Consulta información actualizada sobre precios del café, diferenciación entre café verde y seco, además del historial de actividades realizadas por los usuarios.</p>
+                    </div>
+
+                        <img src="imagenes/imagenes_Stock/abeja_acostada.avif" class="absolute w-[100px] h-[70px] -bottom-[30px] -translate-x-[50px] transition-all group-hover:translate-x-[115px]" alt="abeja Stock">
+
+                        <div class="relative w-full h-full after:content-[''] after:opacity-0 after:absolute after:w-9 after:h-[26px] after:-bottom-3 after:right-[11px] after:bg-[#E28743] after:shadow-[0_0_10px_#E28743,0_0_30px_#e28843bd] after:z-10 after:rounded-[10px] after:transition-all group-hover:after:opacity-100 group-hover:after:scale-[1.4] group-hover:after:delay-100">
+                            <img src="imagenes/imagenes_Stock/pantalla_computador1-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-100 group-hover:opacity-0" alt="computador">
+                            <img src="imagenes/imagenes_Stock/patanlla_computador2-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-0 group-hover:opacity-100" alt="computador">
+                        </div>
+                </div>
+
+                <div class="group w-[35%] max-w-[350px] min-w-[300px] h-auto min-h-[300px] max-h-[350px] px-[25px] py-5 rounded-[15px] flex flex-col bg-[#fffbf8] text-white relative transition-all hover:scale-[1.02] hover:-translate-y-[10px]">
+                    <div class="w-full text-[13px] text-center py-5 text-black transition-all group-hover:text-[#E28743] group-hover:scale-[1.02]">
+                        <h1 class="text-[26px] font-bold">Gestión Contable</h1>
+                    </div>
+
+                    <div class="text-base w-full text-[#444446] leading-[1.5]">
+                        <p>Administra contratos, registra ventas y lleva un control organizado de pagos desde una única plataforma.</p>
+                    </div>
+
+                        <img src="imagenes/imagenes_Stock/abeja_acostada.avif" class="absolute w-[100px] h-[70px] -bottom-[30px] -translate-x-[50px] transition-all group-hover:translate-x-[115px]" alt="abeja Stock">
+
+                        <div class="relative w-full h-full after:content-[''] after:opacity-0 after:absolute after:w-9 after:h-[26px] after:-bottom-3 after:right-[11px] after:bg-[#E28743] after:shadow-[0_0_10px_#E28743,0_0_30px_#e28843bd] after:z-10 after:rounded-[10px] after:transition-all group-hover:after:opacity-100 group-hover:after:scale-[1.4] group-hover:after:delay-100">
+                            <img src="imagenes/imagenes_Stock/pantalla_computador1-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-100 group-hover:opacity-0" alt="computador">
+                            <img src="imagenes/imagenes_Stock/patanlla_computador2-Photoroom.avif" class="absolute bg-center bg-cover bg-no-repeat object-contain w-[100px] h-[70px] -bottom-[40px] -right-[20px] z-20 opacity-0 group-hover:opacity-100" alt="computador">
+                        </div>
+                </div>
+
+            </div>
+
+            <div class="oculto opacity-0 translate-x-20 delay-700 transition-all duration-[1200ms] vis:opacity-100 vis:translate-x-0 flex-1 min-h-[500px] flex flex-wrap items-center justify-center relative after:content-['🐝'] after:w-[12%] after:min-w-[80px] after:max-w-[100px] after:h-[16%] after:min-h-[50px] after:bg-[#000000e0] after:border-2 after:border-[#d4d661] after:z-20 after:absolute after:right-[40%] after:bottom-[40px] after:rounded-[20px] after:text-[55px] after:flex after:items-center after:justify-center after:opacity-100 after:animate-opac">
+
+                        <div class="absolute w-[30%] top-0 max-w-[500px] min-w-[200px] h-[60%] max-h-[500px] bg-[image:radial-gradient(circle,rgba(255,181,125,0.6)_0%,rgba(247,150,76,0)_70%)] animate-circ transition-all"></div>
+
+                <img src="imagenes/imagenes_Stock/abeja_invi_img1.avif" class="w-full h-full max-h-[600px] min-h-[500px] object-contain absolute z-20 opacity-100 animate-imgmove" alt="">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="min-h-screen pt-[150px] pb-[50px] bg-[image:linear-gradient(100deg,#ffcc9d5b),url('imagenes/Fondos_img/fondo_beneficios.avif')] bg-center bg-cover relative [contain:paint]" id="beneficios">
+
+                <div class="px-4 w-full h-[10%] text-[20px] tracking-[2px] text-center pt-[50px] flex items-center justify-center text-black">
+
+                        <h1 class="text-[40px] font-bold">
+                        Porque elegir 
+                    <span class="bg-[image:linear-gradient(to_right,rgb(168,118,25),rgb(240,131,41),rgb(184,95,22))] bg-clip-text text-transparent">
+                        STOCK CONTROL?
+                    </span> 
+                        </h1>
+
+                </div>
+
+        <div class="max-w-[1400px] min-h-[450px] mx-auto px-8 pt-[40px] flex flex-wrap justify-center items-center gap-5 relative">
+
+            <div class="oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0 w-[31%] min-w-[340px] flex items-center justify-center px-4">
+
+                <div class="group w-full max-w-[360px] min-w-[305px] h-[20%] min-h-[230px] max-h-[240px] rounded-[30px] bg-[#ee9949d5] flex items-center justify-center relative transition-all ease-[ease-in-out] p-[5px] overflow-hidden hover:bg-[#f3a357ec] hover:-translate-y-[10px] hover:shadow-[0_8px_10px_#000000a2] after:content-['Toda_la_información_de_la_cooperativa_en_un_solo_lugar.'] after:w-full after:h-[0%] after:-bottom-[18px] after:absolute after:text-[15px] after:flex after:items-center after:justify-center after:text-center after:text-black after:transition-all after:duration-[600ms] after:delay-200 after:bg-[#ffffffc7] after:shadow-[0_0_30px_#ffffff] group-hover:after:h-[20%] group-hover:after:bottom-0">
+
+                    <div class="w-1/5 h-full text-[50px] flex items-center justify-center transition-all text-black group-hover:scale-110 group-hover:text-white">
+                        <i class="fa-solid fa-crosshairs"></i>
+                    </div>
+
+                    <div class="w-[70%] h-full text-[13px] max-[780px]:text-[12px] text-center text-[#fffbf8] transition-all group-hover:text-black">
+                        <h1 class="text-[26px] max-[780px]:text-[24px] font-bold">INFORMACIÓN CENTRALIZADA</h1>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="oculto opacity-0 translate-y-20 delay-300 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0 w-[31%] min-w-[340px] flex items-center justify-center px-4">
+
+                <div class="group w-full max-w-[360px] min-w-[305px] h-[20%] min-h-[230px] max-h-[240px] rounded-[30px] bg-[#ee9949d5] flex items-center justify-center relative transition-all ease-[ease-in-out] p-[5px] overflow-hidden hover:bg-[#f3a357ec] hover:-translate-y-[10px] hover:shadow-[0_8px_10px_#000000a2] after:content-['Importación_y_actualización_desde_archivos_Excel.'] after:w-full after:h-[0%] after:-bottom-[18px] after:absolute after:text-[15px] after:flex after:items-center after:justify-center after:text-center after:text-black after:transition-all after:duration-[600ms] after:delay-200 after:bg-[#ffffffc7] after:shadow-[0_0_30px_#ffffff] group-hover:after:h-[20%] group-hover:after:bottom-0">
+
+                    <div class="w-1/5 h-full text-[50px] flex items-center justify-center transition-all text-black group-hover:scale-110 group-hover:text-white">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+
+                    <div class="w-[70%] h-full text-[13px] max-[780px]:text-[12px] text-center text-[#fffbf8] transition-all group-hover:text-black">
+                        <h1 class="text-[26px] max-[780px]:text-[24px] font-bold">SINCRONIZACIÓN DE DATOS</h1>
+                    </div>
+
+                </div>
+            
+            </div>
+            <div class="oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0 w-[31%] min-w-[340px] flex items-center justify-center px-4">
+
+                <div class="group w-full max-w-[360px] min-w-[305px] h-[20%] min-h-[230px] max-h-[240px] rounded-[30px] bg-[#ee9949d5] flex items-center justify-center relative transition-all ease-[ease-in-out] p-[5px] overflow-hidden hover:bg-[#f3a357ec] hover:-translate-y-[10px] hover:shadow-[0_8px_10px_#000000a2] after:content-['Diseñada_para_facilitar_el_trabajo_diario.'] after:w-full after:h-[0%] after:-bottom-[18px] after:absolute after:text-[15px] after:flex after:items-center after:justify-center after:text-center after:text-black after:transition-all after:duration-[600ms] after:delay-200 after:bg-[#ffffffc7] after:shadow-[0_0_30px_#ffffff] group-hover:after:h-[20%] group-hover:after:bottom-0">
+
+                    <div class="w-1/5 h-full text-[50px] flex items-center justify-center transition-all text-black group-hover:scale-110 group-hover:text-white">
+                        <i class="fa-solid fa-brush"></i>
+                    </div>
+
+                    <div class="w-[70%] h-full text-[13px] max-[780px]:text-[12px] text-center text-[#fffbf8] transition-all group-hover:text-black">
+                        <h1 class="text-[26px] max-[780px]:text-[24px] font-bold">INTERFAZ INTUITIVA</h1>
+                    </div>
+
+                </div>
+                
+            </div>
+
+        </div>
+    </section>
+
+    <section class="min-h-screen pb-[100px] pt-[150px] bg-[image:linear-gradient(100deg,#fffef170),url('imagenes/Fondos_img/fondo_capturas.png')] [contain:paint]" id="capturas">
+
+
+                <div class="px-4 w-full h-[10%] text-[20px] tracking-[2px] text-center pt-[50px] flex items-center justify-center text-black">
+
+                        <h1 class="text-[40px] font-bold">
+                        Panel Administrativo 
+                    <span class="bg-[image:linear-gradient(to_right,rgb(168,118,25),rgb(240,131,41),rgb(184,95,22))] bg-clip-text text-transparent">
+                        STOCK CONTROL
+                    </span> 
+                        </h1>
+
+                </div>
+
+        <div class="oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0 max-w-[1400px] mx-auto min-h-[700px] max-[950px]:min-h-fit max-[950px]:py-[40px] flex items-center justify-center px-4">
+            <img src="imagenes/img_panelStock/stock_inicio.avif" class="w-4/5 max-[950px]:w-full object-contain rounded-[10px] shadow-[0_0_25px_#fcd5a2] animate-imgmove5" alt="">
+        </div>
+
+        <div class="max-w-[1500px] min-h-[800px] px-4 mx-auto flex flex-nowrap max-[950px]:flex-col gap-5">
+
+            <div class="flex-1 flex flex-col gap-5">
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_ventas.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgventas">
+                </div>
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_contratos.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgcontratos">
+                </div>
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-200 transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_pagos.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgpagos">
+                </div>
+
+
+            </div>
+
+            <div class="flex-1 flex flex-col gap-5">
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_cotizacion.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgventas">
+                </div>
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_auditoria.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgcontratos">
+                </div>
+
+                <div class="overflow-hidden rounded-[10px] shadow-none oculto opacity-0 translate-y-20 delay-[400ms] transition-all duration-[1200ms] vis:opacity-100 vis:translate-y-0">
+                    <img src="imagenes/img_panelStock/STOCK_clasificacion.avif" class="w-full object-contain rounded-[10px] transition-all border-none relative hover:shadow-[0_0_5px_hsla(34,100%,50%,0.816)] hover:-translate-y-[5px]" alt="imgpagos">
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="min-h-fit py-8 bg-[#d6813c] [contain:paint]">
+
+        <div class="max-w-[1400px] mx-auto min-h-[100px] flex items-center justify-center flex-wrap px-4 text-white gap-5">
+
+            <div class="w-[150px] h-[50px] rounded-[15px] flex items-center justify-center gap-[10px] text-[15px] text-white font-bold bg-[#E28743] border-2 border-white shadow-none transition-all hover:-translate-y-[3px] hover:scale-[1.01] hover:shadow-[0_0_10px_#E28743] hover:bg-[#c4641b]">
+                HTML5
+                <i class="fa-brands fa-html5"></i>
+            </div>
+
+            <div class="w-[150px] h-[50px] rounded-[15px] flex items-center justify-center gap-[10px] text-[15px] text-white font-bold bg-[#E28743] border-2 border-white shadow-none transition-all hover:-translate-y-[3px] hover:scale-[1.01] hover:shadow-[0_0_10px_#E28743] hover:bg-[#c4641b]">
+                TAILWIND
+                <i class="fa-brands fa-css"></i>
+            </div>
+
+            <div class="w-[150px] h-[50px] rounded-[15px] flex items-center justify-center gap-[10px] text-[15px] text-white font-bold bg-[#E28743] border-2 border-white shadow-none transition-all hover:-translate-y-[3px] hover:scale-[1.01] hover:shadow-[0_0_10px_#E28743] hover:bg-[#c4641b]">
+                JAVASCRIPT
+                <i class="fa-brands fa-js"></i>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer class="min-h-[60px] bg-[#020100] flex flex-col items-center">
+
+        <div class="w-full max-w-[1500px] mx-auto px-4 py-8 flex flex-wrap text-white gap-[50px]">
+
+            <div class="flex flex-col gap-[10px]">
+
+                <span class="text-[#e2bd43] font-bold">YISU_IX</span>
+
+                <a href="https://github.com/jesuserneylagoscollazos-ux" target="_blank">
+                <div class="pt-[10px] text-white">
+                        <i class="fa-brands fa-github"></i>
+                        GitHub
+                </div>
+                </a>
+
+                <a href="https://www.linkedin.com/in/jesus-erney-lagos-collazos-a39198410/?skipRedirect=true " target="_blank">
+                    <div class="text-white">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                        Linkedin
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="w-[100px] h-[100px] rounded-full shadow-[0_0_5px_#ffffff52]">
+                <img src="imagenes/logos/logo_jesus.avif" class="w-full h-full rounded-full" alt="">
+            </div>
+
+        </div>
+
+        <div class="max-w-[1500px] mx-auto p-4 flex text-center text-white text-[14px]">
+            <p>© 2026 STOCK CONTROL, Todos los derechos reservados. | Desarrollado por <span class="text-[#e2bd43] font-bold">YISU_IX</span></p>
+        </div>
+
+    </footer>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>

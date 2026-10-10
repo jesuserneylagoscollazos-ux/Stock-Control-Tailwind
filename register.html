@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Control - Iniciar sesión</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-black: #141414;
+            --color-black-ligth: #242424;
+            --color-neutral: #DBDBDB;
+            --color-amber: #F29A27;
+            --color-amber-ligth: #FFA44A;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    </style>
+
+</head>
+
+<body class="flex items-center justify-center h-screen">
+
+    <div class="fixed inset-0 h-screen w-screen bg-[#080707] overflow-hidden z-[-1] pointer-events-none">
+
+        <!-- CÍRCULOS DISTRIBUIDOS ESTRATÉGICAMENTE POR TODA LA PANTALLA -->
+        <!-- Cada uno tiene su propia posición física fija para garantizar que cubran todo el espacio libre -->
+
+        <!-- Zona Superior Izquierda -->
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[15%] left-[10%] animate-[float-wide-1_16s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[35%] left-[18%] animate-[float-wide-2_22s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[20%] left-[28%] animate-[float-wide-3_18s_infinite_ease-in-out]">
+        </div>
+
+        <!-- Zona Inferior Izquierda -->
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 bottom-[30%] left-[12%] animate-[float-wide-3_20s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 bottom-[15%] left-[25%] animate-[float-wide-1_24s_infinite_ease-in-out]">
+        </div>
+
+        <!-- Zona Superior Derecha -->
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[12%] right-[12%] animate-[float-wide-2_19s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[30%] right-[22%] animate-[float-wide-1_21s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[22%] right-[32%] animate-[float-wide-3_17s_infinite_ease-in-out]">
+        </div>
+
+        <!-- Zona Inferior Derecha -->
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 bottom-[28%] right-[15%] animate-[float-wide-1_23s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 bottom-[15%] right-[28%] animate-[float-wide-2_25s_infinite_ease-in-out]">
+        </div>
+
+        <!-- Zona Centro Superior e Inferior (Detrás de tu tarjeta, pero asomándose) -->
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 top-[8%] left-[50%] -translate-x-1/2 animate-[float-wide-2_20s_infinite_ease-in-out]">
+        </div>
+        <div
+            class="absolute w-1.5 h-1.5 rounded-full bg-orange-400 bottom-[8%] left-[50%] -translate-x-1/2 animate-[float-wide-3_18s_infinite_ease-in-out]">
+        </div>
+
+    </div>
+
+    <div
+        class="w-full max-w-md bg-black backdrop-blur-xl border border-black-ligth rounded-2xl p-8 shadow-2xl shadow-cyan-950/50">
+
+        <!-- Encabezado del Formulario -->
+        <div class="text-center mb-8">
+            <div>
+                <img src="./imagenes/logos/logo_stock.avif" alt=""
+                    class="inline-flex items-center justify-center w-26 rounded-xl bg-black-ligth border border-amber mb-3">
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <form id="register-form" class="space-y-5">
+            <!-- Campo Nombre -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    Nombre
+                </label>
+                <input type="email" placeholder="Fulanito Gonzales..."
+                    class="w-full bg-black-ligth border border-neutral-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber focus:ring-2 focus:ring-orange-300/10 transition-all duration-200">
+            </div>
+
+            <!-- Campo Correo -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    Correo Electrónico
+                </label>
+                <input type="email" placeholder="fulanitojuega@gmail.com"
+                    class="w-full bg-black-ligth border border-neutral-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber focus:ring-2 focus:ring-orange-300/10 transition-all duration-200">
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    Contraseña
+                </label>
+                <div class="relative container-password-eye">
+                    <input  type="password" placeholder="••••••••••••"
+                    class="w-full bg-black-ligth border border-neutral-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber focus:ring-2 focus:ring-orange-300/10 transition-all duration-200 input-password">
+                    <i data-lucide="eye-off" class="w-4 h-4 text-slate-400 absolute right-3.5 top-4 hover:text-amber hover:bg-stone-700/30 rounded-xl transition-all lucide-eye"></i>
+                </div>
+            </div>
+
+            <!-- Campo Confirmar Contraseña -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    Confirmar Contraseña
+                </label>
+                <div class="relative container-password-eye">
+                    <input  type="password" placeholder="••••••••••••"
+                    class="w-full bg-black-ligth border border-neutral-600/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber focus:ring-2 focus:ring-orange-300/10 transition-all duration-200 input-password">
+                    <i data-lucide="eye-off" class="w-4 h-4 text-slate-400 absolute right-3.5 top-4 hover:text-amber hover:bg-stone-700/30 rounded-xl transition-all lucide-eye"></i>
+                </div>
+            </div>
+            
+            <!-- Botón de Envío Neón -->
+            <button type="submit"
+            class="w-full bg-amber hover:bg-amber-ligth text-slate-950 font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-orange-300/40 hover:shadow-orange-300/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+            Registrarse
+        </button>
+            <p class="text-white text-center">Ir al 
+                <a id="route-login" class="font-bold cursor-pointer text-amber">Login</a>
+            </p>
+    </form>
+    
+</div>
+
+    <style>
+        /* Movimientos más amplios en píxeles para que se desplacen libremente sin chocarse */
+        @keyframes float-wide-1 {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(40px, -30px);
+            }
+        }
+
+        @keyframes float-wide-2 {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(-35px, 45px);
+            }
+        }
+
+        @keyframes float-wide-3 {
+
+            0%,
+            100% {
+                transform: translate(0px, 0px);
+            }
+
+            50% {
+                transform: translate(45px, 35px);
+            }
+        }
+    </style>
+
+    <script>lucide.createIcons();</script>
+    <script src="./js/register.js"></script>
+</body>
+
+</html>
