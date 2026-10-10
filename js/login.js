@@ -1,11 +1,10 @@
 
 const loginForm = document.getElementById('login-form')
 
-
 loginForm.addEventListener('click', (e) => {
 
     e.preventDefault()
-    
+
     const icono = e.target.closest('[data-lucide]')
 
     if(!icono) return
@@ -26,6 +25,6 @@ loginForm.addEventListener('click', (e) => {
 
 })
 
-const routeRegister = document.getElementById('route-register')
+const routeLogin = document.getElementById('route-register')
 
-routeRegister.addEventListener('click', () => window.location.href = '../register.html')
+routeLogin.addEventListener('click', () => window.location.href = '../register.html')
